@@ -1,6 +1,8 @@
 <template>
   <TheLayout>
-    <DevComponent />
+    <div class="bg-gray-200 h-screen p-4">
+      <DevComponent />
+    </div>
   </TheLayout>
 </template>
 <script setup lang="ts">

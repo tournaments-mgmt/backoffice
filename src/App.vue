@@ -21,20 +21,20 @@ export default defineComponent({
     const urlTag = browserUtility.getCurrentUrlTag()
     const storageTag = persistenceService.getItem(PersistenceKey.WS_TAG, '')
 
-    if (!urlTag && storageTag) {
-      browserUtility.redirectTag(storageTag)
-    } else if (!urlTag && !storageTag) {
-      const newTag: string = uuid.v4()
-      persistenceService.setItem(PersistenceKey.WS_TAG, newTag)
-      browserUtility.redirectTag(newTag)
-    } else if (urlTag && storageTag && urlTag !== storageTag) {
-      browserUtility.redirectTag(storageTag)
-    } else if ((urlTag && storageTag && urlTag === storageTag) || (urlTag && !storageTag)) {
-      this.store.initShowcase()
-      websocketService.tag = urlTag
-      websocketService.url = env.showCaseWsUrl
-      websocketService.start()
-    }
+    // if (!urlTag && storageTag) {
+    //   browserUtility.redirectTag(storageTag)
+    // } else if (!urlTag && !storageTag) {
+    //   const newTag: string = uuid.v4()
+    //   persistenceService.setItem(PersistenceKey.WS_TAG, newTag)
+    //   browserUtility.redirectTag(newTag)
+    // } else if (urlTag && storageTag && urlTag !== storageTag) {
+    //   browserUtility.redirectTag(storageTag)
+    // } else if ((urlTag && storageTag && urlTag === storageTag) || (urlTag && !storageTag)) {
+    //   this.store.initShowcase()
+    //   websocketService.tag = urlTag
+    //   websocketService.url = env.showCaseWsUrl
+    //   websocketService.start()
+    // }
   },
 })
 </script>
@@ -44,7 +44,7 @@ export default defineComponent({
 </template>
 
 <style>
-@import '@/assets/styles/base.css';
+@import '@/assets/styles/base.scss';
 
 @font-face {
   font-family: 'Press Start 2P';

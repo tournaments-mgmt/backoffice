@@ -1,16 +1,10 @@
 @import 'tailwindcss';
+@plugin "tailwindcss-primeui";
+@import 'primeicons/primeicons.css';
 
 html,
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.h-avail {
-  height: calc(100% - 8rem);
 }

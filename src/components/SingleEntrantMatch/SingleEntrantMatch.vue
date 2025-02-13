@@ -2,27 +2,31 @@
   <div
     class="p-2 flex flex-row justify-between bg-white shadow rounded-lg items-center"
     :style="{
-      'background-image': `-webkit-linear-gradient(left, ${entrants[0].color}, ${entrants[0].color} 0.5rem, transparent 0.5rem, transparent 100%)`,
+      'background-image': `-webkit-linear-gradient(left, ${entrant.color}, ${entrant.color} 0.5rem, transparent 0.5rem, transparent 100%)`,
     }"
   >
-    <div class="flex flex-row justify-between items-center w-full">
+    <div class="flex flex-row items-center w-full">
+      <div
+        class="h-full w-auto flex items-center justify-between p-2"
+        :style="{ 'background-color': entrant.color }"
+      >
+        <i class="pi pi-user"></i>
+      </div>
       <div class="flex flex-row items-center">
         <div>
-          <p
-            class="entrant-name ml-2 text-gray-700 font-semibold font-sans tracking-wide"
-          >
-            {{ entrants[0].name }}
+          <p class="entrant-name ml-2 text-gray-700 font-semibold font-sans tracking-wide">
+            {{ entrant.name }}
           </p>
         </div>
       </div>
       <div v-if="status === MatchStatus.COMPLETED">
         <div
-          v-if="scores.length > 0 && scores[0].length > 0"
+          v-if="scores.length > 0"
           class="flex flex-row justify-center items-center divide-x h-1/2"
         >
           <div class="h-full flex justify-center items-center divide-x">
             <div
-              v-for="(scoreBestOf, scoreBestOfIndex) in scores[0]"
+              v-for="(scoreBestOf, scoreBestOfIndex) in scores"
               :key="scoreBestOfIndex"
               class="h-full flex flex-row items-center"
               :class="{ 'best-score': bestScores[scoreBestOfIndex] === 0 }"
@@ -36,13 +40,13 @@
                   v-if="scoresLabels.length > 0"
                   class="text-gray-700 text-center font-sans tracking-wide"
                 >
-                  {{ scoresLabels[scoreMatchIndex] || "" }}
+                  {{ scoresLabels[scoreMatchIndex] || '' }}
                 </p>
                 <p
                   class="entrant-score text-center text-gray-700 font-semibold font-sans tracking-wide"
                   v-if="!scoreBoolean"
                 >
-                  {{ scoreMatch === undefined ? "-" : scoreMatch }}
+                  {{ scoreMatch === undefined ? '-' : scoreMatch }}
                 </p>
                 <div v-else-if="scoreBoolean" class="p-1">
                   <p v-if="!scoreMatch">-</p>
@@ -60,38 +64,34 @@
           </div>
         </div>
       </div>
-      <div
-        v-if="
-          status === MatchStatus.SCHEDULED || status === MatchStatus.RUNNING
-        "
-      >
-        <p>{{ (showScheduledTime && scheduledStartTime) ? formatTime(scheduledStartTime) : "" }}</p>
+      <div v-if="status === MatchStatus.SCHEDULED || status === MatchStatus.RUNNING">
+        <p>{{ showScheduledTime && scheduledStartTime ? formatTime(scheduledStartTime) : '' }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import type { PropType } from "vue";
-import type { Entrant } from "@/shared/models/Entrant.ts";
-import { MatchStatus } from "@/shared/constants/MatchStatus.ts";
-import moment from "moment";
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import type { Entrant } from '@/shared/models/Entrant.ts'
+import { MatchStatus } from '@/shared/constants/MatchStatus.ts'
+import moment from 'moment'
 
 const SingleEntrantMatch = defineComponent({
   props: {
-    entrants: { type: Array as PropType<Array<Entrant>>, default: () => [] },
+    entrant: { type: Object as PropType<Entrant>, default: () => ({}), required: true },
     scores: {
-      type: Array as PropType<Array<Array<Array<any>>>>,
-      default: () => [[[]]],
+      type: Array as PropType<Array<Array<unknown>>>,
+      default: () => [[]],
     },
     scoresLabels: {
-      type: Array as PropType<Array<String>>,
+      type: Array as PropType<Array<string>>,
       default: () => [],
     },
 
     attempts: { type: Number, default: () => 1 },
-    bestScores: { type: Array as PropType<Array<Number>>, default: () => [] },
+    bestScores: { type: Array as PropType<Array<number>>, default: () => [] },
     scoreBoolean: { type: Boolean, default: () => false },
     status: {
       type: String as PropType<MatchStatus>,
@@ -104,15 +104,15 @@ const SingleEntrantMatch = defineComponent({
     realEndTime: { type: Number, default: () => null },
   },
   setup() {
-    return { MatchStatus: MatchStatus };
+    return { MatchStatus: MatchStatus }
   },
   methods: {
     formatTime(time: number) {
-      return moment(time).format("HH:mm");
+      return moment(time).format('HH:mm')
     },
   },
-});
-export default SingleEntrantMatch;
+})
+export default SingleEntrantMatch
 </script>
 
 <style scoped>
