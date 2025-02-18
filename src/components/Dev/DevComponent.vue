@@ -6,6 +6,7 @@ import { MatchStatus } from '@/shared/constants/MatchStatus.ts'
 import BestOfMatch from '@/components/BestOfMatch/BestOfMatch.vue'
 import ToggleSwitch from 'primevue/toggleswitch'
 import Select from 'primevue/select'
+import MatchEntrant from '@/components/MatchEntrant/MatchEntrant.vue'
 import SingleEntrantMatch from '@/components/SingleEntrantMatch/SingleEntrantMatch.vue'
 
 const bracketMatchProps: Ref<
@@ -42,6 +43,8 @@ const bracketMatchShowScheduledTime = ref(false)
 const bracketMatchAlignment = ref('left')
 
 const singleEntrantMatchShowScheduledTime = ref(false)
+const singleEntrantMatchAlignment = ref('left')
+
 const singleEntrantMatchProps: Ref<
   UnwrapRef<SinglePlayerMatch>,
   UnwrapRef<SinglePlayerMatch> | SinglePlayerMatch
@@ -54,29 +57,32 @@ const singleEntrantMatchProps: Ref<
   scheduledStartTime: moment().add(10, 'minutes').valueOf(),
   scoreBoolean: false,
   scores: [],
+  editMode: false,
   scoresCount: 2,
-  scoresLabels: ['a', 'b'],
+  scoresLabels: ['Tower', 'Kills'],
   showScoresLabels: false,
   status: MatchStatus.SCHEDULED,
-  editMode: false,
+  bestOf: 1,
 })
 
 const DevComponent = defineComponent({
   props: {},
   components: {
     SingleEntrantMatch,
+    MatchEntrant,
     ToggleSwitch,
-    Select,
     BestOfMatch,
+    Select,
   },
   setup() {
     return {
-      bracketMatch: bracketMatchProps,
       MatchStatus: MatchStatus,
+      bracketMatch: bracketMatchProps,
       bracketMatchShowScheduledTime: bracketMatchShowScheduledTime,
       bracketMatchAlignment: bracketMatchAlignment,
       singleEntrantMatch: singleEntrantMatchProps,
       singleEntrantMatchShowScheduledTime: singleEntrantMatchShowScheduledTime,
+      singleEntrantMatchAlignment: singleEntrantMatchAlignment,
     }
   },
   methods: {
@@ -183,7 +189,7 @@ export default DevComponent
       </div>
     </div>
     <div class="flex flex-col">
-      <h1 class="underline font-bold">BestOfMatch</h1>
+      <h1 class="underline font-bold">MatchEntrant</h1>
       <div class="flex flex-col gap-y-2">
         <div class="flex flex-row justify-between">
           <label for="showScoreLabelsSwitch">ShowScoresLabels</label>
@@ -193,11 +199,19 @@ export default DevComponent
           />
         </div>
         <div class="flex flex-row justify-between">
+          <label for="scoreBooleanSwitch">ScoreBoolean</label>
+          <ToggleSwitch inputId="scoreBooleanSwitch" v-model="singleEntrantMatch.scoreBoolean" />
+        </div>
+        <div class="flex flex-row justify-between">
           <label for="showScheduledTimeSwitch">ShowScheduledTime</label>
           <ToggleSwitch
             inputId="showScheduledTimeSwitch"
             v-model="singleEntrantMatchShowScheduledTime"
           />
+        </div>
+        <div class="flex flex-row justify-between">
+          <label for="editModeSwitch">Edit Mode</label>
+          <ToggleSwitch inputId="editModeSwitch" v-model="singleEntrantMatch.editMode" />
         </div>
         <div class="flex flex-col">
           <div class="flex flex-row justify-between">
@@ -213,6 +227,33 @@ export default DevComponent
               placeholder="Status"
             ></Select>
           </div>
+          <div class="flex flex-row justify-between">
+            <label for="bestOfSelect">Best Of</label>
+            <Select
+              input-id="bestOfSelect"
+              v-model="singleEntrantMatch.bestOf"
+              :options="[1, 3, 5]"
+              placeholder="Best Of"
+            ></Select>
+          </div>
+        </div>
+        <div class="flex flex-row justify-between">
+          <label for="alignmentSelect">Alignment</label>
+          <Select
+            input-id="alignmentSelect"
+            v-model="singleEntrantMatchAlignment"
+            :options="['left', 'right']"
+            placeholder="Alignment"
+          ></Select>
+        </div>
+        <div class="flex flex-row justify-between">
+          <label for="scoresCountSelect">Score Count</label>
+          <Select
+            input-id="scoresCountSelect"
+            v-model="singleEntrantMatch.scoresCount"
+            :options="[1, 2, 3, 4, 5]"
+            placeholder="Score Count"
+          ></Select>
         </div>
       </div>
       <div class="mt-10">
@@ -220,16 +261,20 @@ export default DevComponent
           :entrant="singleEntrantMatch.entrant"
           :scores="singleEntrantMatch.scores"
           :scoresLabels="singleEntrantMatch.scoresLabels"
+          :show-scores-labels="singleEntrantMatch.showScoresLabels"
           :score-boolean="singleEntrantMatch.scoreBoolean"
           :attempts="singleEntrantMatch.attempts"
           :best-scores="singleEntrantMatch.bestScores"
           :status="singleEntrantMatch.status"
+          :edit-mode="singleEntrantMatch.editMode"
           :scheduled-start-time="singleEntrantMatch.scheduledStartTime"
           :scheduled-end-time="singleEntrantMatch.scheduledEndTime"
           :show-scheduled-time="singleEntrantMatchShowScheduledTime"
           :real-start-time="singleEntrantMatch.realStartTime"
           :real-end-time="singleEntrantMatch.realEndTime"
-          class="match-item"
+          :align="singleEntrantMatchAlignment"
+          :scores-count="singleEntrantMatch.scoresCount"
+          :best-of="singleEntrantMatch.bestOf"
         ></SingleEntrantMatch>
       </div>
     </div>

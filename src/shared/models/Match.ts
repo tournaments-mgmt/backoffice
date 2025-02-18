@@ -17,6 +17,7 @@ export type Match = {
   attempts?: number
   bestScores?: []
   editMode: boolean
+  bestOf: number
 }
 
 export type SinglePlayerMatch = Match & {
@@ -28,7 +29,6 @@ export type MultiplayerMatch = Match & {
   entrants: Entrant[]
   scores: number[][][]
   entrantsCount: number
-  bestOf: number
   winner: number
 }
 
