@@ -8,3 +8,54 @@ body {
   padding: 0;
   overflow: hidden;
 }
+
+.pulse {
+  background: black;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  transform: scale(1);
+  animation: pulse-black 2s infinite;
+}
+
+.pulse.red {
+  background: white;
+  box-shadow: 0 0 0 0 rgb(69, 69, 69);
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+  0% {
+    transform: scale(0.99);
+    box-shadow: 0 0 0 0 rgb(69, 69, 69);
+  }
+
+  50% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 102, 102, 0);
+  }
+
+  100% {
+    transform: scale(0.99);
+    box-shadow: 0 0 0 0 rgba(255, 102, 102, 0);
+  }
+}
+
+.status-draft {
+  background: var(--p-fuchsia-500);
+  border-color: var(--p-fuchsia-500);
+}
+.status-running {
+  background-color: var(--p-teal-400);
+  border-color: var(--p-teal-400);
+}
+.status-scheduled {
+  background-color: var(--p-sky-500);
+  border-color: var(--p-sky-500);
+}
+.status-completed {
+  background-color: var(--p-emerald-500);
+  border-color: var(--p-emerald-500);
+}
+.status-canceled {
+  background-color: var(--p-red-500);
+  border-color: var(--p-red-500);
+}
